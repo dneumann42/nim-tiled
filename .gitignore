@@ -4,3 +4,4 @@ tests/basic
 htmldocs
 TAGS
 deps/
+*.out

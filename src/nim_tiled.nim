@@ -817,4 +817,224 @@ proc loadTiledMap*(path: string): Map {.raises: [TiledError].} =
   except:
     raise TiledError.newException(getCurrentExceptionMsg())
 
+## String representation functions
+
+proc `$`*(encoding: Encoding): string {.gcsafe.} =
+  case encoding
+  of NoEncoding: "NoEncoding"
+  of Base64: "Base64"
+  of Csv: "Csv"
+
+proc `$`*(compression: Compression): string {.gcsafe.} =
+  case compression
+  of NoCompression: "NoCompression"
+  of Gzip: "Gzip"
+  of Zlib: "Zlib"
+  of Zstd: "Zstd"
+
+proc `$`*(orientation: Orientation): string {.gcsafe.} =
+  case orientation
+  of Orthogonal: "Orthogonal"
+  of Orthographic: "Orthographic"
+  of Isometric: "Isometric"
+  of Staggered: "Staggered"
+  of Hexagonal: "Hexagonal"
+
+proc `$`*(renderOrder: RenderOrder): string {.gcsafe.} =
+  case renderOrder
+  of RightDown: "RightDown"
+  of RightUp: "RightUp"
+  of LeftDown: "LeftDown"
+  of LeftUp: "LeftUp"
+
+proc `$`*(alignment: ObjectAlignment): string {.gcsafe.} =
+  case alignment
+  of Unspecified: "Unspecified"
+  of TopLeft: "TopLeft"
+  of Top: "Top"
+  of TopRight: "TopRight"
+  of Center: "Center"
+  of Right: "Right"
+  of BottomLeft: "BottomLeft"
+  of Bottom: "Bottom"
+  of BottomRight: "BottomRight"
+
+proc `$`*(renderSize: TileRenderSize): string {.gcsafe.} =
+  case renderSize
+  of TileSize: "TileSize"
+  of GridSize: "GridSize"
+
+proc `$`*(fillMode: FillMode): string {.gcsafe.} =
+  case fillMode
+  of Stretch: "Stretch"
+  of PreserveAspectFit: "PreserveAspectFit"
+
+proc `$`*(halign: HAlignment): string {.gcsafe.} =
+  case halign
+  of Left: "Left"
+  of Center: "Center"
+  of Right: "Right"
+  of Justify: "Justify"
+
+proc `$`*(valign: VAlignment): string {.gcsafe.} =
+  case valign
+  of Top: "Top"
+  of Center: "Center"
+  of Bottom: "Bottom"
+
+proc `$`*(kind: ObjectKind): string {.gcsafe.} =
+  case kind
+  of Obj: "Obj"
+  of Ellipse: "Ellipse"
+  of Point: "Point"
+  of Polygon: "Polygon"
+  of Polyline: "Polyline"
+  of Text: "Text"
+
+proc `$`*(drawOrder: DrawOrder): string {.gcsafe.} =
+  case drawOrder
+  of Topdown: "Topdown"
+  of Index: "Index"
+
+proc `$`*(layerKind: LayerKind): string {.gcsafe.} =
+  case layerKind
+  of Tiles: "Tiles"
+  of Objects: "Objects"
+  of ImageLayer: "ImageLayer"
+  of Group: "Group"
+
+proc `$`*(axis: Axis): string {.gcsafe.} =
+  case axis
+  of AxisX: "AxisX"
+  of AxisY: "AxisY"
+
+proc `$`*(propKind: PropKind): string {.gcsafe.} =
+  case propKind
+  of BoolProp: "BoolProp"
+  of ColorProp: "ColorProp"
+  of FileProp: "FileProp"
+  of FloatProp: "FloatProp"
+  of ObjectProp: "ObjectProp"
+  of StringProp: "StringProp"
+
+proc `$`*(vec: Vec2): string {.gcsafe.} =
+  try:
+    result = &"({vec.x}, {vec.y})"
+  except:
+    result = "(Vec2)"
+
+proc `$`*(grid: Grid): string {.gcsafe.} =
+  try:
+    result = &"Grid(orientation: {grid.orientation}, width: {grid.width}, height: {grid.height})"
+  except:
+    result = "Grid(...)"
+
+proc `$`*(prop: Prop): string {.gcsafe.} =
+  try:
+    case prop.kind
+    of BoolProp: result = &"Prop(bool: {prop.boolean})"
+    of ColorProp: result = &"Prop(color: {prop.color})"
+    of FileProp: result = &"Prop(file: {prop.path})"
+    of FloatProp: result = &"Prop(float: {prop.number})"
+    of ObjectProp: result = &"Prop(object: {prop.objectValue})"
+    of StringProp: result = &"Prop(string: {prop.str})"
+  except:
+    result = "Prop(...)"
+
+proc `$`*(frame: Frame): string {.gcsafe.} =
+  try:
+    result = &"Frame(tileid: {frame.tileid}, duration: {frame.duration}ms)"
+  except:
+    result = "Frame(...)"
+
+proc `$`*(transformations: Transformations): string {.gcsafe.} =
+  try:
+    result = &"Transformations(hflip: {transformations.hflip}, vflip: {transformations.vflip}, rotate: {transformations.rotate})"
+  except:
+    result = "Transformations(...)"
+
+proc `$`*(wangcolor: Wangcolor): string {.gcsafe.} =
+  try:
+    result = &"Wangcolor(name: {wangcolor.name}, color: {wangcolor.color}, tile: {wangcolor.tile})"
+  except:
+    result = "Wangcolor(...)"
+
+proc `$`*(wangtile: Wangtile): string {.gcsafe.} =
+  try:
+    result = &"Wangtile(tileid: {wangtile.tileid}, wangid: {wangtile.wangid})"
+  except:
+    result = "Wangtile(...)"
+
+proc `$`*(wangset: Wangset): string {.gcsafe.} =
+  try:
+    result = &"Wangset(name: {wangset.name}, tile: {wangset.tile}, colors: {wangset.wangcolors.len}, tiles: {wangset.wangtiles.len})"
+  except:
+    result = "Wangset(...)"
+
+proc `$`*(image: Image): string {.gcsafe.} =
+  try:
+    result = &"Image(source: {image.source}, size: {image.width}x{image.height})"
+  except:
+    result = "Image(...)"
+
+proc `$`*(tilesetTile: TilesetTile): string {.gcsafe.} =
+  try:
+    result = &"TilesetTile(id: {tilesetTile.id}, pos: ({tilesetTile.x}, {tilesetTile.y}), size: {tilesetTile.width}x{tilesetTile.height})"
+  except:
+    result = "TilesetTile(...)"
+
+proc `$`*(chunk: Chunk): string {.gcsafe.} =
+  try:
+    result = &"Chunk(pos: ({chunk.x}, {chunk.y}), size: {chunk.width}x{chunk.height}, tiles: {chunk.tiles.len})"
+  except:
+    result = "Chunk(...)"
+
+proc `$`*(data: Data): string {.gcsafe.} =
+  try:
+    result = &"Data(encoding: {data.encoding}, compression: {data.compression}, tiles: {data.tiles.len}, chunks: {data.chunks.len})"
+  except:
+    result = "Data(...)"
+
+proc `$`*(tileset: Tileset): string {.gcsafe.} =
+  try:
+    result = &"Tileset(name: {tileset.name}, tileSize: {tileset.tilewidth}x{tileset.tileheight}, count: {tileset.tilecount}, columns: {tileset.columns})"
+  except:
+    result = "Tileset(...)"
+
+proc `$`*(obj: Object): string {.gcsafe.} =
+  try:
+    result = &"Object(kind: {obj.kind}, name: {obj.name}, pos: ({obj.x}, {obj.y}), size: {obj.width}x{obj.height})"
+    case obj.kind
+    of Polygon, Polyline:
+      result.add &", points: {obj.points.len}"
+    of Text:
+      result.add &", text: \"{obj.text}\""
+    else:
+      discard
+    result.add ")"
+  except:
+    result = "Object(...)"
+
+proc `$`*(layer: Layer): string {.gcsafe.} =
+  try:
+    result = &"Layer(kind: {layer.kind}, name: {layer.name}, pos: ({layer.x}, {layer.y}), size: {layer.width}x{layer.height})"
+    case layer.kind
+    of Tiles:
+      result.add &", tiles: {layer.data.tiles.len}"
+    of Objects:
+      result.add &", objects: {layer.objects.len}"
+    of ImageLayer:
+      result.add ", hasImage: " & $(layer.image.isSome)
+    of Group:
+      result.add &", layers: {layer.layers.len}"
+    result.add ")"
+  except:
+    result = "Layer(...)"
+
+proc `$`*(map: Map): string {.gcsafe.} =
+  try:
+    result = &"Map(name: {map.name}, size: {map.width}x{map.height}, tileSize: {map.tilewidth}x{map.tileheight}, tilesets: {map.tilesets.len}, layers: {map.layers.len})"
+  except:
+    result = "Map(...)"
+
 {.pop.}
